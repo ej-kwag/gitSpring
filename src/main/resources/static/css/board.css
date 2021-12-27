@@ -1,0 +1,262 @@
+@charset "UTF-8";
+
+div#board{
+	border: 1px solid grey;
+	margin: 10px auto;
+	padding: 20px;
+	box-sizing: border-box;
+	width: 1000px;
+	height: 700px;
+	border-radius: 10px;
+}
+
+div#first_line{
+	text-align: right;
+	margin-bottom: 10px;
+	vertical-align: middle;
+}
+
+div#first_line input{
+	height: 40px;
+	padding: 5px;
+	border: 1px solid grey;
+	border-radius: 5px;
+}
+
+div#first_line input[name=findStr]{
+	width: 450px;
+}
+
+div#title{
+	border-top: 1px solid grey;
+	border-bottom: 1px solid grey;
+	background-color: #fafafa;
+	padding: 5px;
+}
+
+div#items{
+	padding: 5px;
+}
+
+div#items:last-child{
+	border-bottom: 1px solid grey;
+}
+
+div#items:nth-child(2n-1){
+	background-color: #fafafa;
+}
+
+div#list div span{
+	display: inline-block;
+	height: 40px;
+	padding: 5px;
+	box-sizing: border-box;
+	vertical-align: middle;
+}
+
+span.no{
+	width: 60px;
+}
+
+span.hit{
+	width: 100px;
+}
+
+span.subject{
+	width: 400px;
+	box-sizing: border-box;
+	text-align: center;
+}
+#items span.subject{
+	overflow: hidden;
+    text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+span.mid, span.mdate{
+	width: 150px;
+}
+
+div#items:hover{
+	background-color: #cfd8dc;
+	cursor: pointer;
+}
+
+div#items .subject{
+	text-align: left;
+}
+
+div#list{
+	margin: 10px;
+}
+
+div#btnZone{
+	text-align: center;
+}
+
+div#btnZone input{
+	border-radius: 5px;
+	padding: 3px;
+	box-sizing: border-box;
+	margin: 3px;
+	margin-top: 10px;
+	border: 1px solid grey;
+}
+
+/* insert */
+
+h2{
+	text-align: left;
+}
+
+#board label{
+	display: inline-block;
+	width: 150px;
+	text-align: justify;
+	height: 40px;
+	vertical-align: top !important;
+}
+
+label#lbl_pwd{
+	text-align: right;
+}
+
+input#lbl_mid, input#lbl_pwd{
+	display: inline-block;
+	width: 250px !important;
+}
+
+input#lbl_att{
+	display: inline-block;
+	width: 550px !important;
+}
+
+#content{
+	vertical-align: top;
+}
+
+#board input[type=text], #board input[type=password]{
+	width: 687px;
+	height: 40px;
+	border-radius: 5px;
+	margin: 10px;
+	border: 1px solid grey;
+	padding: 10px;
+}
+
+textarea{
+	width: 687px;
+	height: 300px;
+	border-radius: 5px;
+	margin: 10px;
+	border: 1px solid grey;
+	padding: 10px;
+}
+
+input#btnAtt{
+	height: 40px;
+	padding: 5px;
+	border-radius: 5px;
+}
+
+input[type=file]{
+	display: inline-block;
+}
+
+/* spinner */
+
+@keyframes spinner {
+  to {transform: rotate(360deg);}
+}
+ 
+.spinner:before {
+  z-index : 100;
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin-top: 80px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: #07d;
+  border-bottom-color: #07d;
+  animation: spinner .8s ease infinite;
+}
+
+div#pwd_check{
+	z-index: 1;
+	text-align: center;
+	background-color: rgba(0, 0, 0, 0.3);
+	position:fixed;
+	left:0;
+	top: 0;
+	width:100%;
+	height:100%;
+	display: none;
+}
+#pwd_check form input[name=pwd], #pwd_check form label{
+	width: 300px;
+	text-align: center;
+}
+
+#pwd_check form{
+	margin: 200px auto;
+	padding: 30px;
+	box-sizing: border-box;
+	width: 500px;
+	height: 300px;
+	background-color: white;
+	border-radius: 10px;
+}
+
+
+div#hiddenZone{
+	display: none;
+}
+
+div#doc{
+	display: inline-block;
+	width: 687px;
+	height: 300px;
+	min-height: 200px;
+	overflow: scroll;
+	border-radius: 5px;
+	margin: 10px;
+	border: 1px solid grey;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+div.attZone{
+	display: inline-block;
+	width: 687px;
+	min-height: 50px;
+	overflow: scroll;
+	border-radius: 5px;
+	margin: 10px;
+	border: 1px solid grey;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+div.attZone label{
+	display: inline-block;
+	width: 600px !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

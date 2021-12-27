@@ -1,0 +1,93 @@
+테이블 생성
+		create table board(
+			serial int not null unique,
+			mid varchar(50),
+			subject varchar(200),
+			doc longtext,
+			pwd varchar(200),
+			mdate datetime,
+			hit int,
+			grp int,
+			seq int,
+			deep int
+		);
+		
+		create table boardAtt(
+			serial int primary key auto_increment,
+			grp int,
+			attFile varchar(200)
+		);
+		
+		
+		ALTER TABLE boardAtt ADD CONSTRAINT fk_grade_id FOREIGN KEY (serial) REFERENCES board(serial);
+		
+		commit;
+
+
+
+serial, grp, seq, deep 계층형 쿼리
+		insert into board(serial, grp, seq, deep, subject) values(1, 1, 0, 0, '원본글1');
+		
+		insert into board(serial, grp, seq, deep, subject) values(2, 2, 0, 0, '원본글2');
+		
+		commit;
+		select * from board;
+		select * from boardAtt;
+		
+		/* 1) 1번 글을 보고 답변 */
+		update board set seq=seq+1 where grp=1 and seq>0;
+		insert into board(serial, grp, seq, deep, subject) values(3, 1, 0+1, 0+1, '원본글1의 답변글1');
+		commit;
+		select * from board;
+		
+		/* 2) 1번 글을 보고 두 번째 답변 */
+		update board set seq=seq+1 where grp=1 and seq>0;
+		select * from board;
+		commit;
+		
+		insert into board(serial, grp, seq, deep, subject) values(4, 1, 0+1, 0+1, '원본글1의 답변글2');
+		
+		/* 3) 1번 글을 보고 세 번째 답변 */
+		update board set seq=seq+1 where grp=1 and seq>0;
+		
+		insert into board(serial, grp, seq, deep, subject) values(5, 1, 0+1, 0+1, '원본글1의 답변글3');
+		select * from board;
+		commit;
+		
+		/* 4) 5번 글을 보고 답변(답변의 답변글) */
+		update board set seq=seq+1 where grp=1 and seq>1;
+		commit;
+		insert into board(serial, grp, seq, deep, subject) values(6, 1, 1+1, 1+1, '답변글5의 답변글1');
+		select * from board;
+		commit;
+		
+		/* 5) 5번 글을 보고 두번째 답변 */
+		update board set seq=seq+1 where grp=1 and seq>1;
+		insert into board(serial, grp, seq, deep, subject) values(7, 1, 1+1, 1+1, '답변글5의 답변글2');
+		select * from board;
+		commit;
+		
+		select * from board order by grp desc, seq asc, deep asc;
+
+
+
+board테이블에서 serial과 grp 값을 쉽게 설정하기 위해
+		create table boardSerial(
+			serial int primary key default 0
+		);
+
+
+
+
+프로시저 생성
+		create function getBoardSerial(flag char)
+		returns INT
+		begin
+		   declare num int;
+		   if(flag='i') THEN
+		      update boardSerial set serial = serial+1;
+		   end if;
+		   select serial into num from boardSerial;
+		   return num;
+		end;
+

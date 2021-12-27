@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.jobtc.mybatis.BoardMapper">
+	<select id="search" parameterType="kr.jobtc.board.Page" resultType="kr.jobtc.board.BoardVO">
+		select serial, mid, date_format(mdate, '%y-%m-%d') mdate,
+		hit, grp, seq, deep,
+		(select count(serial) from boardAtt where grp=b.serial) attCnt,
+		concat(lpad(' ', deep*6, '&#160;'),
+			case
+				when deep>0 then concat('└',subject)
+				else subject
+			end
+			) subject
+		from board b
+		where mid like '%${findStr}%'
+		or subject like '%${findStr}%'
+		or doc like '%${findStr}%'
+		order by grp desc, seq asc
+		limit ${startNo-1}, ${listSize}
+	</select>
+	
+	<select id="totSize" parameterType="String" resultType="Integer">
+		select count(serial) totSize from board
+		where mid like '%${_parameter}%' or subject like '%${_parameter}%'
+		or doc like '%${_parameter}%'
+	</select>
+	
+	<select id="view" parameterType="Integer" resultType="kr.jobtc.board.BoardVO">
+		select * from board
+		where serial = #{serial}
+	</select>
+	
+	<update id="hit" parameterType="Integer">
+		update board set hit=hit+1
+		where serial = ${_parameter}
+	</update>
+	
+	<select id="attList" parameterType="Integer" resultType="kr.jobtc.board.BoardAtt">
+		select * from boardAtt where grp = ${_parameter}
+	</select>
+	
+	<update id="modifySave" parameterType="kr.jobtc.board.BoardVO">
+		update board set subject=#{subject}, doc=#{doc}
+		where serial=${serial}
+	</update>
+	
+	<delete id="delete" parameterType="kr.jobtc.board.BoardVO">
+		delete from board where serial = #{serial} and pwd = #{pwd}
+	</delete>
+	
+	<delete id="deleteAtt" parameterType="list">
+		delete from boardAtt where attFile in
+			<foreach collection="list" item="att" open="{" close="}" separator=",">
+				#{att}
+			</foreach>
+	</delete>
+	
+	<delete id="deleteAttGrp" parameterType="Integer">
+		delete from boardAtt where grp = #{_parameter}
+	</delete>
+	
+	<insert id="insert" parameterType="kr.jobtc.board.BoardVO">
+		insert into board(serial, grp, seq, deep, hit,
+							mid, pwd, subject, doc, mdate)
+		values(getBoardSerial('i'), getBoardSerial(''), 0, 0, 0,
+							#{mid}, #{pwd}, #{subject}, #{doc}, now())
+	</insert>
+	
+	<insert id="attInsert" parameterType="kr.jobtc.board.BoardAtt">
+		insert into boardAtt(grp, attFile)
+					values(getBoardSerial(''), #{attFile})
+	</insert>
+	
+	<insert id="attModify" parameterType="kr.jobtc.board.BoardAtt">
+		insert into boardAtt(grp, attFile)
+					values(#{grp}, #{attFile})
+	</insert>
+	
+	<update id="seqUp" parameterType="kr.jobtc.board.BoardVO">
+		update board set seq = seq+1
+		where grp = #{grp} and seq > #{seq}
+	</update>
+	
+	<select id="get_grp" resultType="Integer">
+		select getBoardSerial('') grp
+	</select>
+	
+	<insert id="repl" parameterType="kr.jobtc.board.BoardVO">
+		insert into board(serial, grp, seq, deep, hit,
+						  mid, pwd, subject, doc, mdate)
+		values (getBoardSerial('i'), #{grp}, ${seq}+1, ${deep}+1, 0,
+				#{mid}, #{pwd}, #{subject}, #{doc}, now())
+	</insert>
+	
+	
+	
+	
+	
+</mapper>
