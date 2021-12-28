@@ -70,36 +70,32 @@ public class BoardService {
 			manager.commit(status);
 		}
 		vo = mapper.view(serial);
+		attList = mapper.attList(serial);
+		vo.setAttList(attList);
 		
 		return vo;
 	}
 	
-	public BoardVO viewAtt(int serial) {
-		status = manager.getTransaction(new DefaultTransactionDefinition());
-		BoardVO vo = new BoardVO();
-		vo = session.selectOne("board.viewAtt", serial);
-		return vo;
-	}
-	
 	public boolean modifySave(BoardVO vo) {
+		status = manager.getTransaction(new DefaultTransactionDefinition());
 		boolean b = false;
-		int cnt = session.update("board.modifySave", vo);
+		int cnt = mapper.modifySave(vo);
 		if(cnt>0) {
 			//boardAtt테이블 삭제
 			if(vo.getDelList().size()>0) {
-				session.delete("board.deleteAtt", vo.getDelList());
+				mapper.deleteAtt(vo.getDelList());
 			}
 			
+			manager.commit(status);
+			
 			b=true;
-			session.commit();
 			for(String del : vo.getDelList()) {
 				File delFile = new File(FileUpload.uploadPath + del);
 				if(delFile.exists())delFile.delete();
 			}
 		}else {
-			session.rollback();
+			manager.rollback(status);
 		}
-		session.close();
 		return b;
 	}
 	
@@ -116,20 +112,19 @@ public class BoardService {
 		List<BoardAtt> attList = null;
 		pwd = aes.encrypt(pwd);
 		String path ="C:\\Users\\eunje\\eclipse-workspace\\GitSpring\\src\\main\\webapp\\WEB-INF\\upload\\";
-		vo = view(serial);
+		vo = view(serial, 'd');
 		vo.setPwd(pwd);
-		session = MybaFactorySemi.getFactory().openSession();
 		if(vo.getDoc()==null) {
 			vo.setDoc("");
 		}
 		matcher = pattern.matcher(vo.getDoc());
 		
-		int cnt = session.delete("board.delete", vo);
+		int cnt = mapper.delete(vo);
 		if (cnt > 0) {
 			b = true;
 			// 첨부 파일 정보를 삭제
 			if (vo.getAttList().size() > 0) {
-				c = session.delete("board.deleteAttGrp", serial);
+				c = mapper.deleteAttGrp(serial);
 			}
 
 			// doc 안에 있는 이미지 파일 삭제
@@ -144,56 +139,36 @@ public class BoardService {
 				if (delFile.exists())
 					delFile.delete();
 			}
-			session.commit();
+			manager.commit(status);
 		}else {
-			session.rollback();
+			manager.rollback(status);
 		}
-		session.close();
-		return b;
-	}
-	
-	public boolean d(BoardVO vo) {
-		boolean b = false;
-		try {
-			int c = session.insert("board.insert", vo);
-			if(c>0) {
-				session.commit();
-				b=true;
-			}else {
-				session.rollback();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		session.close();
 		return b;
 	}
 	
 	public boolean insertAtt(BoardVO vo, String job) {
 		boolean b = false;
+		status = manager.getTransaction(new DefaultTransactionDefinition());
+
 		int c = 0;
 		try {
 			for (BoardAtt att : vo.getAttList()) {
 				if(job.equals("i") || job.equals("r")) {
-					c += session.insert("board.attInsert", att);
-				}else if(job.equals("m")) {
-					c += session.insert("board.attModify", att);
-					}
+					c += mapper.attInsert(att);
+				}
 			}
 			if (c == vo.getAttList().size()) {
-				session.commit();
+				manager.commit(status);
 				b=true;
 			}else {
-				session.rollback();
+				manager.rollback(status);
 			}
 			
-			session.commit();
 			b =true;
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		session.close();
 		return b;
 	}
 	
@@ -201,19 +176,23 @@ public class BoardService {
 		boolean b = false;
 		try {
 			//같은 grp 내에 있는 본문글들 중에 seq가 본문글보다 큰 seq들의 값을 증가시킴
-			session.update("board.seqUp", vo);
-			int c = session.insert("board.repl", vo);
+			mapper.seqUp(vo);
+			int c = mapper.insert(vo);
 			if(c>0) {
-				session.commit();
+				manager.commit(status);
 				b = true;
 			}else {
-				session.rollback();
+				manager.rollback(status);
 			}
-			session.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return b;
 	}
 
+	public Page getPage() {return page;}
+	public void setPage(Page page) {this.page = page;}
+	public int getGrp() {return grp;}
+
+	
 }

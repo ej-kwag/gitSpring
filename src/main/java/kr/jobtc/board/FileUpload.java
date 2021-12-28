@@ -52,7 +52,7 @@ public class FileUpload extends HttpServlet{
 		//req.setCharacterEncoding("utf-8");
 		//resp.setContentType("text/html;charset=utf-8");
 		job = req.getParameter("job");
-		dao = new BoardDao();
+		dao = new BoardService();
 		aes = new AES();
 		vo = new BoardVO();
 		page = new Page();

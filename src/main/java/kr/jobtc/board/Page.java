@@ -36,7 +36,10 @@ public class Page {
 	public int getBlockSize() {return blockSize;}
 	public void setBlockSize(int blockSize) {this.blockSize = blockSize;}
 	public int getTotSize() {return totSize;}
-	public void setTotSize(int totSize) {this.totSize = totSize;}
+	public void setTotSize(int totSize) {
+		this.totSize = totSize;
+		pageCompute();
+	}
 	public int getStartPage() {return startPage;}
 	public void setStartPage(int startPage) {this.startPage = startPage;}
 	public int getEndPage() {return endPage;}

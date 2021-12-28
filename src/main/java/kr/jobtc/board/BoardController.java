@@ -20,7 +20,6 @@ public class BoardController {
 	
 	@Autowired
 	BoardService service;
-	
 	Page page = new Page();
 	String msg="";
 	AES aes = new AES();
@@ -38,45 +37,58 @@ public class BoardController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/list", method= {RequestMethod.POST})
+	@RequestMapping(value="/list", method= {RequestMethod.POST, RequestMethod.GET})
 	public ModelAndView list() {
 		ModelAndView mv = new ModelAndView();
 		List<BoardVO> list = service.search(page);
 		page = service.getPage();
+		
 		mv.addObject("page", page);
 		mv.addObject("list", list);
+		mv.setViewName("board/list");
+		
 		return mv;
 	}
 	
 	@RequestMapping(value="/view", method= {RequestMethod.POST})
-	public ModelAndView view(int serial) {
+	public ModelAndView view(int serial, Page page) {
 		ModelAndView mv = new ModelAndView();
-		
+		vo = service.view(serial, 'v');
+		mv.addObject("vo", vo);
+		mv.addObject("page", page);
+		mv.setViewName("board/view");
 		return mv;
 	}
 	
 	@RequestMapping(value="/insert", method= {RequestMethod.POST}) //서블렛의 case : insert일 때
 	public ModelAndView insert(Page page) {
 		ModelAndView mv = new ModelAndView();
+		b = service.insert(vo);
+		mv.addObject("vo", vo);
+		mv.addObject("page", page);
 		mv.setViewName("board/insert");
 		return mv;
 	}
 	
 	@RequestMapping(value="/insertSave", method= {RequestMethod.POST})
 	public void insertSave(BoardVO vo, HttpServletResponse resp) {
-		out = resp.getWriter();
-		this.b = service.insert(vo);
-		this.grp = service.getGrp();
-		String temp="{'flag':'%s', 'grp':'%s'}";
-		String flag = "";
-		if(b) {
-			flag = "OK";
-		}else {
-			flag = "fail";
+		try {
+			out = resp.getWriter();
+			this.b = service.insert(vo);
+			this.grp = service.getGrp();
+			String temp="{'flag':'%s', 'grp':'%s'}";
+			String flag = "";
+			if(b) {
+				flag = "OK";
+			}else {
+				flag = "fail";
+			}
+			String json = String.format(temp, flag, grp);
+			json = json.replaceAll("'", "\"");
+			out.print(json);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		String json = String.format(temp, flag, grp);
-		json = json.replaceAll("'", "\"");
-		out.print(json);
 	}
 	
 	@RequestMapping(value="/modify", method= {RequestMethod.POST})
@@ -93,7 +105,7 @@ public class BoardController {
 	@RequestMapping(value="/modifySave", method= {RequestMethod.POST})
 	public void modifySave(BoardVO vo, Page page, HttpServletResponse resp) {
 		try {
-			b = service.modify(vo);
+			b = service.modifySave(vo);
 			out = resp.getWriter();
 			String temp="{'flag':'%s', 'grp':'%s'}";
 			String flag = "";
@@ -125,7 +137,7 @@ public class BoardController {
 		return mv;
 	}
 	
-	@RequestMapping(value="repl", method= {RequestMethod.POST})
+	@RequestMapping(value="/repl", method= {RequestMethod.POST})
 	public ModelAndView repl(BoardVO vo, Page page) {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("vo", vo);
@@ -134,7 +146,7 @@ public class BoardController {
 		return mv;
 	}
 	
-	@RequestMapping(value="/modifySave", method= {RequestMethod.POST})
+	@RequestMapping(value="/replSave", method= {RequestMethod.POST})
 	public void replSave(BoardVO vo, Page page, HttpServletResponse resp) {
 		try {
 			b = service.repl(vo);
@@ -154,4 +166,5 @@ public class BoardController {
 		}
 	}
 	
+
 }

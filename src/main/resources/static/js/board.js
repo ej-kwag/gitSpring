@@ -9,7 +9,7 @@ function brd(){
 brd.view = function(serial){
 	$frm = $("#frm_search")[0];
 	$frm.serial.value = serial;
-	$frm.action = "board.brd?job=view";
+	$frm.action = "view";
 	$frm.submit();
 	
 }	
@@ -17,7 +17,7 @@ brd.view = function(serial){
 brd.page = function(nowPage){
 	$frm = $("#frm_search")[0]
 	$frm.nowPage.value = nowPage;
-	$frm.action = "board.brd?job=list";
+	$frm.action = "list";
 	$frm.submit();
 }
 /*
@@ -33,7 +33,7 @@ $(function(){
 	$frm = $("#frm_search")[0];
 	
 	$("#btnSearch").click(function(){
-		$frm.action = "board.brd?job=list";
+		$frm.action = "list";
 		$frm.nowPage.value = 1;
 		$frm.submit();
 		/*
@@ -42,7 +42,7 @@ $(function(){
 	})
 	
 	$("#btnInsert").click(function(){
-		$frm.action = "board.brd?job=insert";
+		$frm.action = "insert";
 		$frm.submit();
 	})
 
@@ -65,13 +65,13 @@ $(function(){
 
 	$("#btnList").click(function(){
 		$frm = $("#frm_board")[0];
-		$frm.action = "board.brd?job=list";
+		$frm.action = "list";
 		$frm.submit();
 	})
 	
 	$("#btnModify").click(function(){
 		$frm = $("#frm_board")[0];
-		$frm.action = "board.brd?job=modify";
+		$frm.action = "modify";
 		$frm.submit();
 	})
 	
@@ -82,12 +82,11 @@ $(function(){
 	
 	$("#btnReply").click(function(){
 		$frm = $("#frm_board")[0];
-		$frm.action = "board.brd?job=reply";
+		$frm.action = "repl";
 		$frm.submit();
 	})
 	
 	$("#btnReplySave").click(function(){
-		
 		$param = $("#frm_board").serialize();
 		$.post("board.brd?job=replSave", $param, function(flag){
 			var $fd = $("#frm_upload")[0];
