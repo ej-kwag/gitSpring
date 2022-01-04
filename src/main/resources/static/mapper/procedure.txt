@@ -1,0 +1,26 @@
+create procedure attModifySeq(IN i_serial int, IN i_grp int, IN i_seq int, IN i_boardAtt varchar(200))
+BEGIN
+	insert into board(serial, grp, seq) value(i_serial, i_grp, i_seq);
+	insert into boardAtt(attFile, grp) values (i_boardAtt, i_grp);
+end;
+
+
+
+
+
+
+create procedure attModifyFirst(in i_grp int, in i_attFile varchar(200), in i_serial int)
+begin
+	update boardAtt set grp=i_grp, attFile=i_attFile where serial = i_serial;
+end;
+
+
+
+
+
+
+
+create procedure attModifyNotFirst( in i_grp int, in i_attFile varchar(200), in i_serial int)
+BEGIN
+	insert into boardAtt (grp, attFile, serial) values (i_grp, i_attFile, i_serial);
+end;
