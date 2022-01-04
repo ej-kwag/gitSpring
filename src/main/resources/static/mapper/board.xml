@@ -42,7 +42,7 @@
 	</select>
 	
 	<update id="modifySave" parameterType="kr.jobtc.board.BoardVO">
-		update board set subject=#{subject}, doc=#{doc}
+		update board set subject=#{subject}, doc=#{doc}, pwd=#{pwd}
 		where serial=${serial}
 	</update>
 	
@@ -52,7 +52,7 @@
 	
 	<delete id="deleteAtt" parameterType="list">
 		delete from boardAtt where attFile in
-			<foreach collection="list" item="att" open="{" close="}" separator=",">
+			<foreach collection="list" item="att" open="(" close=")" separator=",">
 				#{att}
 			</foreach>
 	</delete>
@@ -76,6 +76,11 @@
 	<insert id="attModify" parameterType="kr.jobtc.board.BoardAtt">
 		insert into boardAtt(grp, attFile)
 					values(#{grp}, #{attFile})
+	</insert>
+	
+	<insert id="attModifyInsert" parameterType="kr.jobtc.board.BoardAtt">
+		insert into boardAtt(grp, seq, attFile)
+					values(getBoardSerial(''), #{seq}, #{attFile})
 	</insert>
 	
 	<update id="seqUp" parameterType="kr.jobtc.board.BoardVO">

@@ -231,4 +231,18 @@ public class TestController { //servlet 역할
 		mv.setViewName("mvc_test/range_result");
 		return mv;
 	}
+	
+	@RequestMapping(value="/artbay")
+	public ModelAndView artbayMain(HttpServletRequest req) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("artbay/list");
+		return mv;
+	}
+	
+	@RequestMapping(value="/artbay/view")
+	public ModelAndView artbayView(HttpServletRequest req) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("artbay/view");
+		return mv;
+	}
 }

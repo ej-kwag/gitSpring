@@ -46,20 +46,21 @@ $(function(){
 		$frm.submit();
 	})
 
-	$("#btnSave").click(function(){
-		/*
-		$frm = $("#frm_board")[0];
-		$frm.action = "board.brd?job=insertSave";
-		//$frm.enctype = "multipart/form-data";
-		$frm.submit();
-		*/
-		
+	$("#btnSave").click(function(){		
 		$param = $("#frm_board").serialize();
-		$.post("board.brd?job=insertSave", $param, function(flag){
-			var $fd = $("#frm_upload")[0];
-			$fd.enctype="multipart/form-data";
-			$fd.action = "board.boardUp?job=i";
-			$fd.submit();
+		$.post("insertSave", $param, function(data){
+			//param이 frm_board의 모든 정보를 추출하고, 그걸 data가 받음. 스프링으로 가면 그걸 vo가 받음.
+			var json = JSON.parse(data);
+			
+			if(json.flag == 'OK'){
+				var $fd = $("#frm_upload")[0];
+				$fd.grp.value = json.grp;
+				$fd.enctype="multipart/form-data";
+				$fd.action = "fileUp?job=i";
+				$fd.submit();
+			}else{
+				alert("저장 중 오류 발생");
+			}
 		})
 	})
 
@@ -75,7 +76,7 @@ $(function(){
 		$frm.submit();
 	})
 	
-	$("#btnModifySave").click(function(){
+	$("#btnModifySave").click(function() {
 		$("#pwd_check").show();
 	})
 
@@ -88,24 +89,36 @@ $(function(){
 	
 	$("#btnReplySave").click(function(){
 		$param = $("#frm_board").serialize();
-		$.post("board.brd?job=replSave", $param, function(flag){
-			var $fd = $("#frm_upload")[0];
-			$fd.enctype="multipart/form-data";
-			$fd.action = "board.boardUp?job=r";
-			$fd.submit();
+		$.post("replSave", $param, function(data){
+			var json = JSON.parse(data);
+			if (json.flag == "OK") {
+				var $fd = $("#frm_upload")[0];
+				$fd.grp.value = json.grp;
+				$fd.enctype = "multipart/form-data";
+				$fd.action = "fileUp?job=r";
+				alert($fd.serial.value)
+				$fd.submit();
+			}else{
+				alert("답변 글 저장 중 오류 발생");
+			}	
 		})
 	})
 	
 	$("#btnDelete").click(function(){
 		$("#pwd_check").show();
+		$("#modal #btnPwdCheckDelete").click(function() {
+			$("id_check").css("display", "none");
+			$("#frm_board")[0].pwd.value = $("#inputPwd").val();
+			$frm = $("#frm_board")[0];
+			$frm.action = "delete";
+			$frm.submit();
+		})
 	})
 
 })
 
 var loadInterval = []; //이미지가 서버에 upload 되었는지 체크하는 기능
-function summer(){
-	
-	
+function summer(){	
 	var fonts = [
 		"맑은 고딕", "고딕", "돋움", "바탕", "바탕체", "굴림", "굴림체"
 	]
@@ -127,7 +140,7 @@ function summer(){
 				$.ajax({
 					data : {target : file},
 					type : 'POST',
-					url : 'delete.summerUp?flag=delete',
+					url : 'summerDelete',
 					cache : false,
 					success : function(msg){}
 				})
@@ -142,7 +155,7 @@ function sendFile(intervalPos, file){
 	$.ajax({
 		data 		: form_data,
 		type 		: 'POST',
-		url 		: 'upload.summerUp',
+		url 		: 'summerUp',
 		enctype 	: 'multipart/form-data',
 		cache	 	: false,
 		contentType : false,
@@ -156,7 +169,6 @@ function sendFile(intervalPos, file){
 
 function loadCheck(pos, img){
 	var target = new Image(); //업로드 될 이미지
-	target.src = img;
 	target.onload = function() { //이미지가 모두 서버에 저장된 상태
 		clearInterval(loadInterval[pos]);
 		$('#summernote').summernote('editor.insertImage', img)
@@ -170,29 +182,28 @@ function pwdCheckClose(){
 	$("#pwd_check").css("display","none");
 }
 
-function pwdCheckSave(){
-	$param = $("#frm_board").serialize();
-	$.post("board.brd?job=modifySave", $param, function(){
-		$frm = $("#frm_upload")[0];
-		$frm.enctype='multipart/form-data';
-		$frm.action = "board.boardUp?job=m";
-		$frm.submit();
-	})
-}
 function pwdCheckDelete(){
+	$("#frm_board")[0].pwd.value = $("#modalPwd").val();
+	console.log($("#modalPwd").val());
 	$frm = $("#frm_board")[0];
-	$frm.action = "board.brd?job=delete";
+	$frm.action = "delete";
 	$frm.submit();
 }
 
-
-
-
-
-
-
-
-
-
-
-
+function pwdCheckSave(){
+	$("id_check").css("display", "none");
+	$("#frm_board")[0].pwd.value = $("#modalPwd").val();
+	$param = $("#frm_board").serialize();
+	//alert($("#delFile").is(":checked")==true)
+	$.post("modifySave", $param, function(data){
+		var json = JSON.parse(data);
+		if (json.flag == "OK") {
+			var $fd = $("#frm_upload")[0];
+			$fd.enctype = "multipart/form-data";
+			$fd.action = "fileUp?job=m";
+			$fd.submit();
+		} else {
+			alert("수정 중 오류 발생");
+		}
+	})
+}

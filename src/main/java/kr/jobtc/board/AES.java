@@ -7,6 +7,8 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 
 public class AES {
 	String iv;

@@ -2,7 +2,7 @@ package kr.jobtc.board;
 
 public class Page {
 	int startNo, endNo;
-	int listSize = 10, blockSize=10, totSize;
+	int listSize = 10, blockSize=5, totSize;
 	int startPage, endPage, totPage;
 	int nowPage=1;
 	String findStr="";

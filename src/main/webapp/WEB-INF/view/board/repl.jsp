@@ -36,19 +36,21 @@ $(function(){
 		<br/>
 		<label id="content">내용</label>
 		<textarea id="summernote" name="doc"></textarea>
-		<input type="text" name="serial" value="${vo.serial }">	
-		<input type="text" name="grp" value="${vo.grp }">			
+		<input type="text" name="grp" value="${vo.grp }">	
+		<input type="text" name="serial" value="${vo.serial }">			
 		<input type="text" name="seq" value="${vo.seq }">			
 		<input type="text" name="deep" value="${vo.deep }">
 	</form>
 	<form name="frm_upload" id="frm_upload" method="post">
 		<label>첨부</label>
-		<input type="file" value="찾아보기..." name = "attFile" id="btnAtt" multiple="multiple">
+		<input type="file" value="찾아보기..." name = "attfile" id="btnAtt" multiple="multiple">
 		<br/>
 		<div id="hiddenZone">
 			<input type="text" name="findStr" value="${page.findStr }" />
 			<input type="text" name="nowPage" value="${page.nowPage }">
-			<input type="text" name="serial" value="${vo.serial }">			
+			<input type="text" name="grp" value="${vo.serial }">	
+			<input type="text" name="serial" id="serial" value="${vo.serial }">			
+			<input type="text" name="seq" id="seq" value="${vo.seq }">			
 		</div>
 	</form>
 	<div id="btnZone">

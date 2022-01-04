@@ -16,9 +16,11 @@ public class BoardVO {
 	int deep;
 	int attCnt;
 	List<BoardAtt> attList = new ArrayList<BoardAtt>();
-	List<String> delList = new ArrayList<String>();
+	List<String> delList = new ArrayList<String>();	
+	String[] delFile;
 	
-	
+	public String[] getDelFile() {return delFile;}
+	public void setDelFile(String[] delFile) {this.delFile = delFile;}
 	public int getSerial() {return serial;}
 	public void setSerial(int serial) {this.serial = serial;}
 	public String getMid() {return mid;}

@@ -28,6 +28,8 @@ $(function(){
 	<form name="frm_board" id="frm_board" method="post">
 		<label >작성자</label>
 		<input type="text" name="mid" id="lbl_mid" value="${vo.mid }"/>
+		<label id="lbl_pwd">암호</label>
+		<input type="password" name="pwd" id="lbl_pwd"/>
 		<br/>
 		<label>제목</label>
 		<input type="text" name="subject" value="${vo.subject }"/>
@@ -40,24 +42,25 @@ $(function(){
 			<c:if test="${not empty vo.attList }">
 				<c:forEach var="att" items="${vo.attList }">
 					<div>
-						<label><span>${att.attFile }</span>
-						<input type="checkbox" name="delFile" value="${att.attFile }">삭제</label>
+						<label id="check"><span>${att.attFile }</span>
+						<input type="checkbox" name="delFile" id="delFile" value="${att.attFile }">삭제</label>
 					</div>
 				</c:forEach>
 			</c:if>
 		</div>
-		<input type="hidden" name="serial" value="${vo.serial }">			
+		<input type="hidden" name="serial" value="${vo.serial }">				
+		<input type="hidden" name="seq" value="${vo.seq }">				
 	</form>
 	<form name="frm_upload" id="frm_upload" method="post">
 		<label>첨부</label>
-		<input type="file" value="찾아보기..." name = "attFile"id="btnAtt">
+		<input type="file" value="찾아보기..." name = "attfile" id="btnAtt" multiple="multiple">
 		<br/>
 		<div id="hiddenZone">
 			<input type="hidden" name="findStr" value="${page.findStr }" />
 			<input type="hidden" name="nowPage" value="${page.nowPage }">
-			<input type="hidden" name="serial" value="${vo.serial }">			
-			<input type="hidden" name="grp" value="${vo.grp }">			
-			<input type="hidden" name="seq" value="${vo.seq }">			
+			<input type="hidden" name="serial" id="serial" value="${vo.serial }">			
+			<input type="hidden" name="grp" id="grp" value="${vo.grp }">			
+			<input type="hidden" name="seq" id="seq" value="${vo.seq }">			
 			<input type="hidden" name="deep" value="${vo.deep }">
 		</div>
 	</form>
@@ -69,9 +72,9 @@ $(function(){
 		<form name="modal" method="post">
 			<label> 암호를 입력 하세요 </label>
 			<br/>
-			<input type="password" name="pwd"/>
+			<input type="password" name="modalPwd"/>
 			<br/>
-			<input type="button" name="btnPwdCheckSave" value="저장" onclick="pwdCheckSave()"/>
+			<input type="button" name="btnPwdCheckModify" value="저장" onclick="pwdCheckSave()"/>
 			<input type="button" name="btnPwdCheckCancel" value="취소" onclick="pwdCheckClose()"/>
 		</form>
 	</div>

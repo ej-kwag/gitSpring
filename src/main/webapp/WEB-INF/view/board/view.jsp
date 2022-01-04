@@ -64,7 +64,7 @@
 		<form name="modal" method="post">
 			<label> 암호를 입력 하세요 </label>
 			<br/>
-			<input type="password" name="pwd"/>
+			<input type="password" id="modalPwd" name="pwd"/>
 			<br/>
 			<input type="button" name="btnPwdCheckDelete" value="삭제" onclick="pwdCheckDelete()"/>
 			<input type="button" name="btnPwdCheckCancel" value="취소" onclick="pwdCheckClose()"/>

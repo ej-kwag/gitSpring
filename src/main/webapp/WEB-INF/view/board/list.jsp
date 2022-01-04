@@ -44,8 +44,8 @@
 					<input type="button" value="이전" id="btnPrevious" onclick="brd.page(${page.startPage-1 })">
 				</c:if>	
 				<c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
-					<input type="button" value="${i }" onclick="brd.page(${i})"
-							class = "${(i==page.nowPage)?  'here' : ''}">
+					<input type="button" value="${i }" class = "${(i==page.nowPage)?  'here' : ''}"
+								onclick="brd.page(${i})" />
 				</c:forEach>
 				<c:if test="${page.endPage < page.totPage}">
 					<input type="button" value="다음" id="btnNext" onclick="brd.page(${page.endPage+1})">
@@ -53,8 +53,8 @@
 				</c:if>
 			</div>
 			<div id="hiddenZone">
-				<input type="text" name="nowPage" value="${page.nowPage }" onclick="brd.page(${page.endPage+1}})" />
-				<input type="text" name="serial" value="${vo.serial }" onclick="brd.page(${page.totPage})" />
+				<input type="text" name="nowPage" value="${page.nowPage }" />
+				<input type="text" name="serial" value="${vo.serial }" />
 			</div>
 		</div>	
 	

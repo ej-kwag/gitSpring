@@ -20,6 +20,7 @@
 		<li><a href="/mvc_test/sum">두 수의 합</a></li>
 		<li><a href="/mvc_test/max">최대값</a></li>
 		<li><a href="/mvc_test/range">범위값</a></li>
+		<li><a href="/artbay/list">아트베이</a></li>
 	</ul>
 </div>
 </body>

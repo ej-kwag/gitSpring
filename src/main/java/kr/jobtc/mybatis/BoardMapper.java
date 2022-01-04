@@ -28,4 +28,5 @@ public interface BoardMapper {
 	public void seqUp(BoardVO vo);
 	public int repl(BoardVO vo);
 	public int get_grp();
+	public int attModifyInsert(BoardAtt att);
 }

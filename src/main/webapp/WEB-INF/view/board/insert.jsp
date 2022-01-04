@@ -41,14 +41,15 @@ $(function(){
 		<br/>
 		<div id="hiddenZone">
 			<input type="hidden" name="findStr" value="${page.findStr }" />
-			<input type="hidden" name="nowPage" value=${page.nowPage }>
+			<input type="hidden" name="nowPage" value="${page.nowPage }" />
 		</div>
 	</form>
 	<form name="frm_upload" id="frm_upload" method="post">
-		<label>첨부</label><input type="file" value="찾아보기..." name="attFile" id="attFile" multiple="multiple" />
+		<label>첨부</label><input type="file" value="찾아보기..." name="attfile" id="attFile" multiple="multiple" />
 		
 		<input type="hidden" name="findStr" value="${page.findStr }" />
 		<input type="hidden" name="nowPage" value=${page.nowPage }>	
+		<input type="hidden" name="grp" />
 		
 	</form>
 		<div id="btnZone">
